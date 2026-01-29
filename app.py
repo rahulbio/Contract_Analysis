@@ -12,6 +12,15 @@ st.set_page_config(
     layout="wide"
 )
 
+# ------------------------------------------------------------
+# Ensure models are present (Streamlit Cloud safe)
+# ------------------------------------------------------------
+import os
+
+if not os.path.exists("resources/deberta-clause-final"):
+    from download_models import ensure_models
+    ensure_models()
+
 import tempfile
 from llm.llm_client import ollama_client
 
