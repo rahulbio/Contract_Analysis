@@ -2,6 +2,7 @@ streamlit==1.32.2
 
 torch==2.1.2
 transformers==4.36.2
+sentencepiece==0.1.99
 sentence-transformers==2.6.1
 
 numpy==1.26.4

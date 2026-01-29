@@ -880,7 +880,7 @@ def load_baselines():
         np.load("resources/clause_polarity.npy", allow_pickle=True).item()
     )
 
-clause_tokenizer, clause_model, embedder = load_models()
+clause_tokenizer, clause_model, embedder = None, None, None
 clause_centroids, clause_thresholds, clause_applicability_thresholds, clause_polarity_profiles = load_baselines()
 
 ID_TO_CLAUSE = {int(k): v for k, v in clause_model.config.id2label.items()}
@@ -933,6 +933,9 @@ def polarity_violation(text, profile):
 # ============================================================
 
 def analyze_document(pdf_path):
+    global clause_tokenizer, clause_model, embedder
+    if clause_tokenizer is None or clause_model is None or embedder is None:
+        clause_tokenizer, clause_model, embedder = load_models()
     # ---- PDF TO TEXT ----
     pages = []
     with pdfplumber.open(pdf_path) as pdf:
