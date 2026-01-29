@@ -852,6 +852,8 @@ device = torch.device("cpu")
 CLAUSE_MODEL_PATH = "resources/deberta-clause-final"
 EMBEDDING_MODEL_NAME = "sentence-transformers/all-mpnet-base-v2"
 
+from download_models import ensure_models
+ensure_models()
 
 # ============================================================
 # ♻️ CACHED LOADERS
@@ -859,7 +861,11 @@ EMBEDDING_MODEL_NAME = "sentence-transformers/all-mpnet-base-v2"
 
 @st.cache_resource
 def load_models():
-    tokenizer = AutoTokenizer.from_pretrained(CLAUSE_MODEL_PATH)
+    tokenizer = AutoTokenizer.from_pretrained(
+    CLAUSE_MODEL_PATH,
+    use_fast=False,          # 🔑 critical fix
+    local_files_only=False   # allow download
+)
     model = AutoModelForSequenceClassification.from_pretrained(CLAUSE_MODEL_PATH)
     model.eval()
     embedder = SentenceTransformer(EMBEDDING_MODEL_NAME)
